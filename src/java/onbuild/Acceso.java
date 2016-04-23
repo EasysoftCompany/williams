@@ -676,9 +676,8 @@ public class Acceso {
         }
 
     }
-    public void crearCita(String fecha,String hora, String Cedula, String nickp){
+    public void crearCita(String fecha,String hora, String Cedula, String nickp) throws SQLException{
         String ccita="insert into sesiones(Fecha, Hora, Cedula, NP, Stat) values(?,?,?,?,?)";
-        try {
             ps=iniCon().prepareStatement(ccita);
             ps.setString(1, fecha);
             ps.setString(2, hora);
@@ -686,13 +685,7 @@ public class Acceso {
             ps.setString(4, nickp);
             ps.setInt(5, 0);
             //0 pendiente, 1 si, 2 no, 3 rechazada
-            ps.executeUpdate();
-            
-        } catch (SQLException ex) {
-            System.out.println(ex);
-            System.out.println(" ");
-            System.out.println(ex.getMessage());
-        }
+            ps.executeUpdate();   
         
     }
     

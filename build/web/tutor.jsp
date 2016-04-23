@@ -59,7 +59,7 @@
         </nav>
 
         <main>
-            <div id="container">
+            <div class="container">
                 <h1 class="flow-text">Tutor: <% out.println(sesion.getAttribute("usuario")); %></h1>
                 <form action="CerrarSesion" method="post">
 

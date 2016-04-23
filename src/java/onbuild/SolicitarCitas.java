@@ -35,8 +35,20 @@ public class SolicitarCitas extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             
             //crearCita(String fecha,String hora, String Cedula, String nickp){
-            conex.crearCita(request.getParameter("fecha"), request.getParameter("hora"), request.getParameter("nt"), request.getParameter("np"));
-            response.sendRedirect("tutor.jsp");
+            try {
+                 conex.crearCita(request.getParameter("fecha"), request.getParameter("hora"), request.getParameter("nt"), request.getParameter("np"));
+            } catch (Exception e) {
+                System.err.println("SQL EXCEPTION: " + e.toString());
+                                out.println("<script>"
+                        + "alert('Error al crear la Cita');"
+                        + "window.location = '../williams9/tutor.jsp';"
+                        + "</script>");
+            }
+           
+                            out.println("<script>"
+                        + "alert('Cita Creada con Exito');"
+                        + "window.location = '../williams9/tutor.jsp';"
+                        + "</script>");
         }
     }
 
