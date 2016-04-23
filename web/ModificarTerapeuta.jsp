@@ -9,52 +9,151 @@
 <%@page import="onbuild.Acceso"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%
-    HttpSession sesion = request.getSession();
-    String nom = sesion.getAttribute("usuario") + "";
-    String priv = sesion.getAttribute("privilegio") + "";
 
-    if (priv.equals("3")) {
-        response.sendRedirect("paciente.jsp");
+<%HttpSession sesion=request.getSession();
+String nom= sesion.getAttribute("usuario")+"";
+String priv= sesion.getAttribute("privilegio")+"";
+                  
+                   if(priv.equals("3")){
+                       response.sendRedirect("paciente.jsp");
+                   
+                   }else if(priv.equals("4")){
+                       response.sendRedirect("tutor.jsp");
+                   
+                   }else if(priv.equals("2")){
+                       
+                   }else if(priv.equals("1")){
+                       response.sendRedirect("admin.jsp");
+                   }else{
+                       response.sendRedirect("loginp.jsp");
+                   } %>
 
-    } else if (priv.equals("4")) {
-        response.sendRedirect("tutor.jsp");
 
-    } else if (priv.equals("2")) {
-        response.sendRedirect("terapeuta.jsp");
-    } else if (priv.equals("1")) {
-
-    } else {
-        response.sendRedirect("loginp.jsp");
-    }%>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>ModificarTerapeuta</title>
+        <meta charset="UTF-8">
+        <link href="css/principal.css" rel="stylesheet" type="text/css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form action="ModificarPaciente" name="forma">
-            <select name="xd">
-                <%
-                    Acceso eliminar = new Acceso();
-                    PreparedStatement ps = null;
-                    ResultSet rs = null;
-                    String nick[];
-                    ps = eliminar.iniCon().prepareStatement("SELECT * FROM Usuario where tipoUsu=2");
-                    rs = ps.executeQuery();
-                    while (rs.next()) { %>
-                <option> <% out.print(rs.getString("Nick")); %> </option>
-                <% }%>
-            </select>
-            <br>
-            <br>
-            <input type="text" name="nomte" placeholder="Nombre"/><br>
-            <input type="text" name="appte" placeholder="Apellido Paterno"/><br>
-            <input type="text" name="apmte" placeholder="Apellido Materno"/><br>
-            <input type="text" name="cedu" placeholder="Cedula Prof"/><br>
-            <input type="password" name="clate" placeholder="Clave"/><br>
-            <input type="text" name="nickte" placeholder="Nickname"/><br>
-            <input type="submit" value="Modificar">
+        
+        <center>
+        <header id="fondo_superior">
+            <center><img src="css/logo.png" id="logo"/></center>
+            
+        </header>
+        
+        <div id="menu">
+                <center>
+                    <table>
+                        <tr>
+                            <td>
+                                <form action="CerrarSesion" method="post">
+                                <input type="button" value="Consultar paciente" onclick="window.location.href='ConsultarPaciente.jsp'" id="boton">    
+                                <input type="button" value="Agenda" onclick="window.location.href = 'Agenda.jsp'" id="boton"/>
+                                <input type="button" value="Registrar Paciente y Tutor" onclick="window.location.href = 'registrarPT.jsp'" id="boton"/>
+                                <input type="button" value="Modificar Terapeuta" onclick="window.location.href = 'ModificarTerapeuta.jsp'" id="boton"/>
+                                <input type="button" value="solicitudes de citas" onclick="window.location.href = 'ResponderCitas.jsp'" id="boton"/>
+                                <input type="button" value="Eliminar Paciente y Tutor" onclick="window.location.href = 'eliminarPT.jsp'" id="boton"/>
+                                <input type="button" value="Crear Diagnostico" onclick="window.location.href = 'Diagnosticar.jsp'" id="boton"/>
+                                <input type="button" value="Expediente" onclick="window.location.href = 'Expediente.jsp'" id="boton"/>
+                                <input type="submit" value="Cerrar Sesion" id="boton">
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </center>
+            </div>
+        
+        <%--Declaramos todas las variables para terapeuta--%>
+        <%
+        String nombre;
+        String paterno;
+        String materno;
+        String cedula=request.getParameter("cedula");
+        String nick;
+        String clave;
+        String lunes;
+        String martes;
+        String miercoles;
+        String jueves;
+        String viernes;
+        String sabado;
+        String Domingo;
+        int privilegios;
+        
+        %>
+            
+            
+        <%--Consultamos la información del terapeuta por cedula--%>
+        <%
+            Acceso conex = new Acceso();
+            String terapeuta[] = conex.consultarTerapeutaPorCedula(cedula);
+        %>
+        <div><center>
+                <h2>
+                    <%=terapeuta[0]%>
+                    <%=terapeuta[1]%>
+                    <%=terapeuta[2]%>
+                </h2>
+                <h3>
+                   Cédula: <%=terapeuta[3]%>
+                   <br>Nickname: <%=terapeuta[4]%>
+                   <br>Contraseña: <%=terapeuta[5]%>
+                   
+                </h3>  
+                   <form action="ModificarHorario" method="get">   
+                    <table>
+                    </tr>
+                    <tr>
+                        <td>
+                            LUNES
+                        </td>
+                        <td>
+                            MARTES
+                        </td>
+                        <td>
+                            MIERCOLES
+                        </td>
+                        <td>
+                            JUEVES
+                        </td>
+                        <td>
+                            VIERNES
+                        </td>
+                        <td>
+                            SABADO
+                        </td>    
+                    <tr>
+                        <td>
+                            <input type="text" name="lunes" placeholder="00:00 - 00:00" size="10" value="<%=terapeuta[6]%>"/> 
+                        </td>
+                        <td>
+                            <input type="text" name="martes" placeholder="00:00 - 00:00" size="10" value="<%=terapeuta[7]%>"/> 
+                        </td>
+                        <td>
+                            <input type="text" name="miercoles" placeholder="00:00 - 00:00" size="10" value="<%=terapeuta[8]%>"/>  
+                        </td>
+                        <td>
+                            <input type="text" name="jueves" placeholder="00:00 - 00:00" size="10" value="<%=terapeuta[9]%>"/>  
+                        </td>
+                        <td>
+                            <input type="text" name="viernes" placeholder="00:00 - 00:00" size="10" value="<%=terapeuta[10]%> "/> 
+                        </td>
+                        <td>
+                            <input type="text" name="sabado" placeholder="00:00 - 00:00" size="10" value="<%=terapeuta[11]%>"/>  
+                        </td>     
+                    </tr>
+                </table>
+                        <br>
+                        <br>
+                        <input type="hidden" name="cedula"value="<%=cedula%>">
+                        <input type="submit"  value="Actualizar Horario"/>
         </form>
+        
+        </center>
     </body>
 </html>

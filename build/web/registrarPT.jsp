@@ -4,6 +4,7 @@
     Author     : Wolf
 --%>
 
+<%@page import="onbuild.Acceso"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -28,6 +29,19 @@ String priv= sesion.getAttribute("privilegio")+"";
                    }else{
                        response.sendRedirect("loginp.jsp");
                    } %>
+    
+  <%-- 
+  Otenemos la cedula del terapeuta para poder hacer la relación
+  --%>
+  <%
+      Acceso conex= new Acceso();
+      String terapeuta[]=conex.consultarDatosTerapeuta(nom);
+      String nombre=terapeuta[0];
+      String paterno=terapeuta[1];
+      String materno=terapeuta[2];
+      String cedula=terapeuta[3];
+  %>
+                   
     <head>
         <title>Terapeuta</title>
         <meta charset="UTF-8">
@@ -46,9 +60,10 @@ String priv= sesion.getAttribute("privilegio")+"";
                         <tr>
                             <td>
                                 <form action="CerrarSesion" method="post">
+                                <input type="button" value="Consultar paciente" onclick="window.location.href='ConsultarPaciente.jsp'" id="boton">    
                                 <input type="button" value="Agenda" onclick="window.location.href = 'Agenda.jsp'" id="boton"/>
                                 <input type="button" value="Registrar Paciente y Tutor" onclick="window.location.href = 'registrarPT.jsp'" id="boton"/>
-                                <input type="button" value="Modificar Tutor" onclick="window.location.href = 'ModificarTut.jsp'" id="boton"/>
+                                <input type="button" value="Modificar Terapeuta" onclick="window.location.href = 'ModificarTerapeuta.jsp?cedula=<%=cedula%>'" id="boton"/>
                                 <input type="button" value="solicitudes de citas" onclick="window.location.href = 'ResponderCitas.jsp'" id="boton"/>
                                 <input type="button" value="Eliminar Paciente y Tutor" onclick="window.location.href = 'eliminarPT.jsp'" id="boton"/>
                                 <input type="button" value="Crear Diagnostico" onclick="window.location.href = 'Diagnosticar.jsp'" id="boton"/>
@@ -63,6 +78,13 @@ String priv= sesion.getAttribute("privilegio")+"";
                 </center>
             </div>
     </center>
+    
+    <h1> <%--Datos del terapeuta--%>
+        <% 
+            out.println(nombre+" "+paterno+" "+materno+" ; Cédula:"+cedula);
+        %>
+    </h1>
+    
     <p>Registro del paciente</p>
         <form action="RegistrarP" name="" method="post">
             <input type="text" name="nom" placeholder="Nombre"/><br>
@@ -97,6 +119,7 @@ String priv= sesion.getAttribute("privilegio")+"";
             <input type="text" name="nickt" placeholder="Nickname"/><br>
             <input type="password" name="clat" placeholder="Clave Tutor"/><br>
             <input type="hidden" name="priv_tutor" value="4"/>
+            <input type="hidden" name="cedula" value="<%=cedula%>">
             <input type="submit" value="Registrar" id="boton"/>
             
         </form>

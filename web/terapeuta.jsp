@@ -25,6 +25,9 @@
     }
 
 %>
+
+
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -42,9 +45,11 @@
                     <table>
                         <tr>
                             <td>
-                                <form action="CerrarSesion" method="post">
-                                <input type="button" value="Registrar Paciente y Tutor" onclick="window.location.href = 'registrarPT.jsp'" id="boton"/>
-                                <input type="button" value="Modificar Tutor" onclick="window.location.href = 'ModificarTut.jsp'" id="boton"/>
+                               <form action="CerrarSesion" method="post">
+                                <input type="button" value="Consultar paciente" onclick="window.location.href='ConsultarPaciente.jsp'" id="boton">    
+                                <input type="button" value="Agenda" onclick="window.location.href = 'Agenda.jsp'" id="boton"/>
+                                <input type="button" value="Registrar Paciente y Tutor" onclick="window.location.href='registrarPT.jsp'" id="boton"/>
+                                <input type="button" value="Modificar Terapeuta" onclick="window.location.href = 'ModificarTerapeuta.jsp'" id="boton"/>
                                 <input type="button" value="solicitudes de citas" onclick="window.location.href = 'ResponderCitas.jsp'" id="boton"/>
                                 <input type="button" value="Eliminar Paciente y Tutor" onclick="window.location.href = 'eliminarPT.jsp'" id="boton"/>
                                 <input type="button" value="Crear Diagnostico" onclick="window.location.href = 'Diagnosticar.jsp'" id="boton"/>
@@ -59,7 +64,13 @@
                 </center>
             </div>
     </center>
-    <h1> Bienvenido Terapeuta: <% out.println(sesion.getAttribute("usuario"));%></h1>
+    <h1> Bienvenido Terapeuta:
+        <% 
+            out.println(sesion.getAttribute("usuario"));
+           
+        %>
+    </h1>
+    
 
 
 </body>

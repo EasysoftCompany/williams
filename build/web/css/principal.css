@@ -7,6 +7,29 @@ and open the template in the editor.
     Created on : 11-ene-2016, 22:47:19
     Author     : Wolf
 */
+
+       .contenedor{
+                margin: 0 auto;
+                width: 1000px;
+            }
+            
+            .contenedorP{
+                width: 100%;
+            }
+            .contenedor1{
+                float:left;
+                width: 33.3%;
+        
+            }
+            .contenedor2{
+                float:left;
+                width: 33.3%;
+         
+            }
+            .contenedor3{
+                float: left;
+                width: 33.3%;
+            }
 body{
     background-color: #666;
     color: #FFF;

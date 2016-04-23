@@ -43,10 +43,6 @@ public class IniciarSesion extends HttpServlet {
             String usuario = request.getParameter("nick");
             String pass = request.getParameter("pass");
 
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<body> Estamos en el servlet iniciar sesion, parametros recibidos:");
-            out.println(usuario + pass);
 
             try {
 
@@ -55,21 +51,24 @@ public class IniciarSesion extends HttpServlet {
                 String[] paciente = conexion.consultarPaciente(usuario,pass);
                 String[] tutor = conexion.consultarTutor(usuario,pass);
 
-                out.println("<br>Resultado de la consulta administradores: " + administrador[0] + administrador[1] + administrador[2]);
-                out.println("<br>Resultado de la consulta terapeutas: " + terapeuta[0] + terapeuta[1] + terapeuta[2]+terapeuta[3]);
-                out.println("Fin de la consulta");
+
                 System.out.println("Dato de la sesion"+sesion.getAttribute("usuario"));
                 System.out.println("Resultado de la consulta para administrador, en iniciarSesion.java: " + administrador[0] + administrador[1] + administrador[2]);
                 System.out.println("Resultado de la consulta para Terapeuta, en iniciarSesion.java: " + terapeuta[0] + terapeuta[1] + terapeuta[2]+terapeuta[3]);
                 System.out.println("Resultado de la consulta para paciente, en iniciarSesion.java: " + paciente[0] + paciente[1] + paciente[2]);
                 System.out.println("Resultado de la consulta para Tutor, en iniciarSesion.java: " + tutor[0] + tutor[1] + tutor[2]);
                 
+                out.println("<script>"
+                        + "alert('Error en el Inicio de Sesion');"
+                        + "window.location = '../williams9';"
+                        + "</script>");
+                
                 /*Si en terapeuta hay algo diferente a null, sesion para el terapeuta*/
                 if (terapeuta[0] != null) {
                     sesion.setAttribute("usuario", terapeuta[1]);
                     sesion.setAttribute("pass", terapeuta[2]);
                     sesion.setAttribute("privilegio", terapeuta[3]);
-                    response.sendRedirect("terapeuta.jsp");
+                    response.sendRedirect("terapeuta.jsp?cedula="+terapeuta[0]);
                 }
                 
                 /*Si en paciente hay algo diferente a null, sesion para paciente */
@@ -91,7 +90,7 @@ public class IniciarSesion extends HttpServlet {
                     sesion.setAttribute("usuario", administrador[0]);
                     sesion.setAttribute("pass", administrador[1]);
                     sesion.setAttribute("privilegio", administrador[2]);
-                    response.sendRedirect("admin.jsp");
+                    response.sendRedirect("InicioAdministrador.jsp");
 
                 } 
                 
@@ -100,9 +99,6 @@ public class IniciarSesion extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(IniciarSesion.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            out.println("</body>");
-            out.println("</html>");
         }
     }
 

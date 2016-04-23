@@ -11,7 +11,7 @@
 <%HttpSession sesion = request.getSession();
     String nom = sesion.getAttribute("usuario") + "";
     String priv = sesion.getAttribute("privilegio") + "";
-    String clave = sesion.getAttribute("pass") +"";
+    String clave = sesion.getAttribute("pass") + "";
 
     if (priv.equals("3")) {
         response.sendRedirect("paciente.jsp");
@@ -65,6 +65,99 @@
             System.out.println("En agenda, userTerapeuta:" + userTerapeuta);
         %>
 
+<%-- 
+    Se hace un desplegado de las sesiones por fecha solo para el terapeuta
+--%>
+        
+<div>
+    <h1>Consultar sesiones por fecha</h1>
+    
+    <%//Declaramos las variables para fecha
+        String fecha=request.getParameter("fecha");
+    %>
+    
+    <form method="get" action="Agenda.jsp">
+            Consultar las sesiones para la fecha: <input type="hidden" name="user_terapeuta" value="<%=userTerapeuta%>"/><br>
+            <input type="date" placeholder="dd/mm/aaaa" name="fecha" min="1980-01-01" max="2020-01-01"/><br>
+            <input type="submit" value="Consultar" id="boton">
+        </form>
+    
+    
+     <table>
+            <tr id="tabla">
+                <td>
+                    idSesion
+                </td>
+                <td>
+                    Cedula
+                </td>
+                <td>
+                    Curp_Paciente
+                </td>
+                <td>
+                    Fecha
+                </td>
+                <td>
+                    Hora
+                </td>
+                <td>
+                    No_sesion
+                </td>
+                <td>
+                    Observaciones
+                </td>
+            </tr>
+            <%
+                /*Establecemos un conexion para obtener los datos del terapeuta*/
+                Acceso conexion = new Acceso();
+                String[] terapeuta = conexion.consultarTerapeuta(nom, clave);
+
+                /*Preparamos la consulta de todos los registros en sesiones*/
+                PreparedStatement ps;
+                ResultSet rs;
+                Acceso ac = new Acceso();
+                
+                String query="SELECT * FROM sesiones where Cedula="+terapeuta[0]+" AND Fecha='"+fecha+"'";
+                ps = ac.iniCon().prepareStatement(query);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+            %>
+
+            <tr id="tabla">
+                <td>
+                    <% out.print(rs.getString("IdSesion")); %>
+                </td>
+                <td>
+                    <% out.print(rs.getString("Cedula")); %>
+                </td>
+                <td>
+                    <% out.print(rs.getString("Curp_paciente")); %>
+                </td>
+                <td>
+                    <% out.print(rs.getString("Fecha")); %>
+                </td>
+                <td>
+                    <% out.print(rs.getString("Hora")); %>
+                </td>
+                <td>
+                    <% out.print(rs.getString("No_sesion")); %>
+                </td>
+                <td>
+                    <% out.print(rs.getString("Observaciones")); %>
+                </td>
+
+            </tr>
+            <% }%>
+        </table>    
+</div>    
+
+
+<%-- 
+    Despliega el formulario para obtener la información y agendar una sesion
+    con el terapeuta.
+--%>      
+        
+<div>
         <h1>Agendar sesion</h1>
         <form method="post" action="Agenda">
 
@@ -103,17 +196,12 @@
                 </td>
             </tr>
             <%
-                /*Establecemos un conexion para obtener los datos del terapeuta*/
-                Acceso conexion = new Acceso();
-                String[] terapeuta = conexion.consultarTerapeuta(nom, clave);
+                /**
+                 * Se realiza la consulta solo de las sesiones relacionadas
+                 * entre el Terapeuta y el Paciente.
+                 */
 
-               
-                /*Preparamos la consulta de todos los registros en sesiones*/
-                PreparedStatement ps;
-                ResultSet rs;
-                Acceso ac = new Acceso();
-
-                ps = ac.iniCon().prepareStatement("SELECT * FROM sesiones where Cedula="+terapeuta[0]);
+                ps = ac.iniCon().prepareStatement("SELECT * FROM sesiones where Cedula=" + terapeuta[0]);
                 rs = ps.executeQuery();
                 while (rs.next()) {
             %>
@@ -145,7 +233,7 @@
             <% }%>
         </table>
 
-
+</div>
 
 
 

@@ -37,25 +37,7 @@ String nickt=sesion.getAttribute("nick")+"";
         
         <style type="text/css">
             
-            #contenedorR{
-                margin: 0 auto;
-                width: 1000px;
-            }
-            #paciente{
-                float:left;
-                width:300px;
-        
-            }
-            #resultados{
-                float:left;
-                width: 300px;
-         
-            }
-            #diagnostico{
-                float: left;
-                width: 300px;
-          
-            }
+     
         </style>
     </head>
     <body>
@@ -86,7 +68,10 @@ String nickt=sesion.getAttribute("nick")+"";
             <br>
             <br>
             
-            <h1>Consulta un expediente</h1>
+        <div>
+            <h1>EXPEDIENTE</h1>
+            
+        <div>
         <%
             //Declaración de variables
             String curpPaciente=request.getParameter("curpPaciente");
@@ -100,9 +85,9 @@ String nickt=sesion.getAttribute("nick")+"";
             //Pedimos CURP paciente para consultar
         %>
         <form name="consultarExp" action="Expediente.jsp" method="get">
-            CURP del paciente: <input type="text" name="curpPaciente" placeholder="CURP del Paciente">
+            CURP del paciente: <input type="text" name="curpPaciente" value="<%=curpPaciente%>" placeholder="CURP del Paciente">
             <input type="submit" value="Consultar"/>
-         </form>   
+        </form>   
         <%
             /**********************************************************
              * Consulta del Expediente del paciente 
@@ -127,39 +112,63 @@ String nickt=sesion.getAttribute("nick")+"";
              String paternoPaciente=paciente[1];
              String maternoPaciente=paciente[2];
              curpPaciente=paciente[3];
-             String FNacPaciente=paciente[4];
+             String fNacPaciente=paciente[4];
              String escolaridadPaciente=paciente[5];
              String sexoPaciente=paciente[6];
              String edadPaciente=paciente[7];
              String lateralidadPaciente=paciente[8];
+             String nickPaciente=paciente[9];
+             String clavePaciente=paciente[10];
+             String idPrivPaciente=paciente[11];
+             
              
 //Continuar
 
         %>  
            
         
-        <%//Mostramos imfrmacion%>        
-        
-        <div id="contenedorR">
-        <div id="paciente">
-            <h2>Datos del paciente</h2>
-        </div>    
-        
-        <div id="resultados">
-            <h2>Resultados de las pruebas</h2>
-        </div>    
-       
-        <div id="diagnostico">
-        <h2>Diagnostico</h2>
-        <h3>Estudios </h3>
-        <p><%=estudios%></p>
-        <h3>Diagnostico </h3>
-        <p><%=diagnostico%></p>
-        <h3>Observaciones</h3>
-        <p><%=observaciones%></p>    
-        </div>        
-        </div>
+        <%//Mostramos imformacion%>        
+        <div class="contenedorP">
+            <h2><%=nombrePaciente%> <%=paternoPaciente%> <%=maternoPaciente%></h2>
+            <div class="contenedor1">
+                <br>CURP:<%=curpPaciente%>
+                <br>Fecha de Nacimiento:<%=fNacPaciente%>
+                <br>Escolaridad:<%=escolaridadPaciente%>
+            </div>
+            <div class="contenedor2">    
+                <br>Sexo:<%=sexoPaciente%>   
+                <br>Edad:<%=edadPaciente%>
+                <br>Lateralidad:<%=lateralidadPaciente%>
+            </div>
+            <div class="contenedor3">    
+                <br>Nick:<%=nickPaciente%>
+                <br>Clave:<%=clavePaciente%>
+                <br>Privilegio:<%=idPrivPaciente%>
+            </div>
+      </div>
            
-    </center>
+              
+    
+       <div class="contenedorP">
+           <form action="ActualizarExpediente" method="post">
+        <div class="contenedor1">
+            <h3>Estudios </h3>
+            <input type="textarea" name="estudios" value="<%=estudios%>"/>
+        </div>
+        <div class="contenedor2">
+            <h3>Diagnostico </h3>
+            <input type="textarea" name="diagnosticos" value="<%=diagnostico%>"/>
+        </div>
+        <div class="contenedor3">    
+            <h3>Observaciones</h3>
+            <input type="textarea" name="observaciones" value="<%=observaciones%>"/>
+        </div>
+        <input type="hidden" name="curpPaciente" value="<%=curpPaciente%>">
+        <input type="submit" value="Actualizar Expediente">
+        
+        </form>
+        </div>
+        
+        </center>
     </body>
 </html>
